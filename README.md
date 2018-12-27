@@ -39,6 +39,8 @@ spg c:\cesta-k-adresari r
   - page.html
 - **posts**
 
+Pozn.: posts aktuálně nejsou podporovány. Lze generovat jen statické pages.
+
 # Algoritmus generátoru
 
 1. Najde cestu ke všem souborům (PathFinder)
