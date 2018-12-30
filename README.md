@@ -51,3 +51,11 @@ Pozn.: posts aktuálně nejsou podporovány. Lze generovat jen statické pages.
 6. Provede kompilaci assetů (pouze less soubory)
 7. Vykopíruje assety do výstupní složky **_site**
 
+## Systémové proměnné
+
+Lze použít systémové proměnné, které jsou při generování dynamicky nahrazeny.
+
+- {{system.date}} - aktuální datum
+- {{system.datetime}} - aktuální datum a čas
+- {{system.spg.version}} - aktuální verze generátoru SPG
+
