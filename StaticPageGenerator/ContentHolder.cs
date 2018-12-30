@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using StaticPageGenerator.Models;
 
 namespace StaticPageGenerator
@@ -63,7 +65,11 @@ namespace StaticPageGenerator
 					}
 				}
 
-				var htmlPage = new HtmlPage()
+                // nahradí systémové proměnné
+			    content = content.Replace("{{system.datetime}}", DateTime.Now.ToString("dd.MM.yyyy"));
+			    content = content.Replace("{{system.spg.version", Assembly.GetExecutingAssembly().GetName().Version.ToString());
+
+                var htmlPage = new HtmlPage()
 				{
 					FileName = page.Id,
 					Content = content

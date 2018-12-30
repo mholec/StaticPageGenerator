@@ -35,6 +35,7 @@ namespace StaticPageGenerator
 
 			// kopírování assetů (kompletní adresář)
 			new DirectoryHelper().CopyDirectory(root + "/assets", root + "/" + outputFolder + "/assets", true);
+			new DirectoryHelper().CopyDirectory(root, root + "/" + outputFolder, false);
 		}
 
 
