@@ -6,7 +6,7 @@
 	  <PackAsTool>true</PackAsTool>
 	  <ToolCommandName>spg</ToolCommandName>
 	  <PackageOutputPath>./nupkg</PackageOutputPath>
-	  <Version>1.2.7</Version>
+	  <Version>1.2.8</Version>
 	  <PackageId>StaticPageGenerator</PackageId>
 	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>

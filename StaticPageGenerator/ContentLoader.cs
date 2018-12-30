@@ -101,7 +101,7 @@ namespace StaticPageGenerator
 				Page page = new Page()
 				{
 					Id = fileInfo.FileName(),
-					Layout = headers.FirstOrDefault(x => x.Key == "layout")?.Value ?? "default"
+					Layout = headers.FirstOrDefault(x => x.Key == "layout")?.Value ?? "layout"
 				};
 
 				// zapíše nalezené proměnné (zatím hardcoded)

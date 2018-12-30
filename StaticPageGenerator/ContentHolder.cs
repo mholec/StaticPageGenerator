@@ -68,7 +68,7 @@ namespace StaticPageGenerator
                 // nahradí systémové proměnné
 			    content = content.Replace("{{system.date}}", DateTime.Now.ToString("dd.MM.yyyy"));
 			    content = content.Replace("{{system.datetime}}", DateTime.Now.ToString("dd.MM.yyyy HH:mm"));
-			    content = content.Replace("{{system.spg.version", Assembly.GetExecutingAssembly().GetName().Version.ToString());
+			    content = content.Replace("{{system.spg.version}}", Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
                 var htmlPage = new HtmlPage()
 				{
