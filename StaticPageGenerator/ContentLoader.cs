@@ -30,7 +30,16 @@ namespace StaticPageGenerator
 				Pages = LoadPages()
 			};
 
-			return contentHolder;
+		    try
+		    {
+		        contentHolder.BlogPosts = LoadBlogPosts();
+		    }
+		    catch (Exception)
+		    {
+		        // ignored
+		    }
+
+		    return contentHolder;
 		}
 
 		private List<Include> LoadIncludes()
@@ -119,5 +128,48 @@ namespace StaticPageGenerator
 
 			return pages;
 		}
-	}
+
+	    private List<Page> LoadBlogPosts()
+	    {
+	        List<Page> pages = new List<Page>();
+
+	        foreach (string path in pathFinder.GetBlogPosts)
+	        {
+	            FileInfo fileInfo = new FileInfo(path);
+	            string body = File.ReadAllText(path, Encoding.Default);
+
+	            if (!body.Contains("---"))
+	            {
+	                continue;
+	            }
+
+	            List<string> headerLines = File.ReadAllLines(path, Encoding.UTF8).Take(10).ToList();
+	            var headers = headerLines
+	                .Select(x => x.Split(":"))
+	                .Where(x => x.Length == 2)
+	                .Select(x => new { Key = x[0], Value = x[1] }).ToList();
+
+	            // základní informace o stránce
+	            Page page = new Page()
+	            {
+	                Id = fileInfo.FileName(),
+	                Layout = headers.FirstOrDefault(x => x.Key == "layout")?.Value ?? "layout"
+	            };
+
+	            // zapíše nalezené proměnné (zatím hardcoded)
+	            page.Variables.Add("var.title", headers.FirstOrDefault(x => x.Key == "var.title")?.Value);
+
+	            // odřízne hlavičku stránky s metadaty
+	            body = body.Substring(body.IndexOf("---", StringComparison.InvariantCultureIgnoreCase) + 3);
+	            Content content = Content.Build(fileInfo.IsMarkdown(), body);
+
+	            // nastaví obsah
+	            page.Html = content.Html;
+
+	            pages.Add(page);
+	        }
+
+	        return pages;
+	    }
+    }
 }

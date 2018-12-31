@@ -13,13 +13,14 @@ namespace StaticPageGenerator
 	{
 		public List<Layout> Layouts { get; set; }
 		public List<Page> Pages { get; set; }
+		public List<Page> BlogPosts { get; set; }
 		public List<Include> Includes { get; set; }
 
 		/// <summary>
 		/// Poskládá obsah a vrátí výslednou sadu HtmlPages
 		/// </summary>
 		/// <returns></returns>
-		public List<HtmlPage> Build()
+		public List<HtmlPage> BuildPages()
 		{
 			List<HtmlPage> htmlPages = new List<HtmlPage>();
 
@@ -79,7 +80,71 @@ namespace StaticPageGenerator
 				htmlPages.Add(htmlPage);
 			}
 
-			return htmlPages;
+            return htmlPages;
 		}
-	}
+
+	    /// <summary>
+	    /// Poskládá obsah a vrátí výslednou sadu HtmlPages
+	    /// </summary>
+	    /// <returns></returns>
+	    public List<HtmlPage> BuildBlogPosts()
+	    {
+	        List<HtmlPage> htmlPages = new List<HtmlPage>();
+
+	        // zapíše includy do pages a layoutů
+	        foreach (var include in Includes)
+	        {
+	            foreach (var post in BlogPosts)
+	            {
+	                string mac = "{{include." + include.Id + "}}";
+	                post.Html = post.Html.Replace(mac, include.Html);
+	            }
+	        }
+
+	        foreach (var post in BlogPosts)
+	        {
+	            // pokusí se najít layout pro page
+	            Layout layout = Layouts.FirstOrDefault(x => x.Id == post.Layout);
+	            if (layout == null)
+	            {
+	                continue;
+	            }
+
+	            // vloží content page do layoutu
+	            string content = layout.Html;
+	            content = content.Replace("{{body}}", post.Html);
+
+	            // nahradí proměnné obsahem a pokud neexistují, vyhodí placeholder
+	            foreach (string layoutVariable in layout.Variables)
+	            {
+	                if (post.Variables.ContainsKey(layoutVariable))
+	                {
+	                    content = content.Replace("{{" + layoutVariable + "}}", post.Variables[layoutVariable]);
+	                }
+	                else
+	                {
+	                    content = content.Replace("{{" + layoutVariable + "}}", "");
+	                }
+	            }
+
+	            // nahradí systémové proměnné
+	            content = content.Replace("{{system.date}}", DateTime.Now.ToString("dd.MM.yyyy"));
+	            content = content.Replace("{{system.datetime}}", DateTime.Now.ToString("dd.MM.yyyy HH:mm"));
+	            content = content.Replace("{{system.spg.version}}", Assembly.GetExecutingAssembly().GetName().Version.ToString());
+
+                // nahradí odkazy zanoření
+	            content = content.Replace("assets/", "../assets/");
+
+                var htmlPage = new HtmlPage()
+	            {
+	                FileName = post.Id,
+	                Content = content
+	            };
+
+	            htmlPages.Add(htmlPage);
+	        }
+
+	        return htmlPages;
+	    }
+    }
 }

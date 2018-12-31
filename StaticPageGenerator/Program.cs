@@ -1,21 +1,22 @@
-﻿using System.Threading;
+using System.Threading;
+using StaticPageGenerator.Models;
 
 namespace StaticPageGenerator
 {
-	public class Program
-	{
-		// args[0] - input
-		// args[1] - repeat
-		static void Main(string[] args)
-		{
-			new Generator().Gen(args[0]);
+    public class Program
+    {
+        static void Main(string[] args)
+        {
+            GeneratorConfig config = new ConfigLoader().GetConfig(args[0]);
 
-			while (args.Length > 1 && args[1] == "r")
-			{
-				new Generator().Gen(args[0]);
+            new Generator().Gen(config.InputPath);
 
-				Thread.Sleep(2000);
-			}
-		}
-	}
+            while (config.IsRecurrent)
+            {
+                new Generator().Gen(args[0]);
+
+                Thread.Sleep(2000);
+            }
+        }
+    }
 }

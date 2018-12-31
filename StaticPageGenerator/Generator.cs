@@ -21,17 +21,27 @@ namespace StaticPageGenerator
 			ContentHolder contentHolder = contentLoader.GetContentHolder();
 
 			// sestavení sady HTML stránek
-			List<HtmlPage> pages = contentHolder.Build();
+			List<HtmlPage> pages = contentHolder.BuildPages();
 
-			// uložení výsledných stránek
-			Directory.CreateDirectory(root + "/" + outputFolder);
+            // uložení výsledných stránek
+            Directory.CreateDirectory(root + "/" + outputFolder);
 			foreach (var page in pages)
 			{
 				File.WriteAllText(root + "/" + outputFolder + "/" + page.FileName + ".html", page.Content);
 			}
 
-			// kompilace assetů
-			LessCompiler.CompileLessFiles(root + "/assets/less");
+		    // sestavení sady HTML postů
+		    List<HtmlPage> posts = contentHolder.BuildBlogPosts();
+
+            // uložení výsledných stránek
+		    Directory.CreateDirectory(root + "/" + outputFolder + "/blog");
+            foreach (var post in posts)
+		    {
+		        File.WriteAllText(root + "/" + outputFolder + "/blog/" + post.FileName + ".html", post.Content);
+		    }
+
+            // kompilace assetů
+            LessCompiler.CompileLessFiles(root + "/assets/less");
 
 			// kopírování assetů (kompletní adresář)
 			new DirectoryHelper().CopyDirectory(root + "/assets", root + "/" + outputFolder + "/assets", true);

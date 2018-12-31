@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 
 namespace StaticPageGenerator
 {
@@ -17,6 +17,6 @@ namespace StaticPageGenerator
 		public string[] GetPages => Directory.GetFiles(root + "/pages");
 		public string[] GetIncludes => Directory.GetFiles(root + "/includes");
 		public string[] GetLayouts => Directory.GetFiles(root + "/layouts");
-		public string[] GetPosts => Directory.GetFiles(root + "/posts");
+		public string[] GetBlogPosts => Directory.GetFiles(root + "/blog");
 	}
 }
