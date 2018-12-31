@@ -115,6 +115,7 @@ namespace StaticPageGenerator
 
 				// zapíše nalezené proměnné (zatím hardcoded)
 				page.Variables.Add("var.title", headers.FirstOrDefault(x => x.Key == "var.title")?.Value);
+				page.Variables.Add("var.description", headers.FirstOrDefault(x => x.Key == "var.description")?.Value);
 
 				// odřízne hlavičku stránky s metadaty
 				body = body.Substring(body.IndexOf("---", StringComparison.InvariantCultureIgnoreCase) + 3);
