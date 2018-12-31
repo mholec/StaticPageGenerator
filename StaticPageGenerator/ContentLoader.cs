@@ -77,7 +77,7 @@ namespace StaticPageGenerator
 				{
 					Html = body,
 					Id = fileInfo.FileName(),
-					Variables = new List<string>() { "var.title" }
+					Variables = new List<string>() { "var.title", "var.description", "var.category", "var.social.image" }
 				};
 
 				layouts.Add(layout);
@@ -116,6 +116,8 @@ namespace StaticPageGenerator
 				// zapíše nalezené proměnné (zatím hardcoded)
 				page.Variables.Add("var.title", headers.FirstOrDefault(x => x.Key == "var.title")?.Value);
 				page.Variables.Add("var.description", headers.FirstOrDefault(x => x.Key == "var.description")?.Value);
+				page.Variables.Add("var.category", headers.FirstOrDefault(x => x.Key == "var.category")?.Value);
+				page.Variables.Add("var.social.image", headers.FirstOrDefault(x => x.Key == "var.social.image")?.Value);
 
 				// odřízne hlavičku stránky s metadaty
 				body = body.Substring(body.IndexOf("---", StringComparison.InvariantCultureIgnoreCase) + 3);
@@ -157,11 +159,14 @@ namespace StaticPageGenerator
 	                Layout = headers.FirstOrDefault(x => x.Key == "layout")?.Value ?? "layout"
 	            };
 
-	            // zapíše nalezené proměnné (zatím hardcoded)
+                // zapíše nalezené proměnné (zatím hardcoded)
 	            page.Variables.Add("var.title", headers.FirstOrDefault(x => x.Key == "var.title")?.Value);
+	            page.Variables.Add("var.description", headers.FirstOrDefault(x => x.Key == "var.description")?.Value);
+	            page.Variables.Add("var.category", headers.FirstOrDefault(x => x.Key == "var.category")?.Value);
+	            page.Variables.Add("var.social.image", headers.FirstOrDefault(x => x.Key == "var.social.image")?.Value);
 
-	            // odřízne hlavičku stránky s metadaty
-	            body = body.Substring(body.IndexOf("---", StringComparison.InvariantCultureIgnoreCase) + 3);
+                // odřízne hlavičku stránky s metadaty
+                body = body.Substring(body.IndexOf("---", StringComparison.InvariantCultureIgnoreCase) + 3);
 	            Content content = Content.Build(fileInfo.IsMarkdown(), body);
 
 	            // nastaví obsah
