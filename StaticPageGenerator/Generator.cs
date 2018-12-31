@@ -45,7 +45,10 @@ namespace StaticPageGenerator
 
 			// kopírování assetů (kompletní adresář)
 			new DirectoryHelper().CopyDirectory(root + "/assets", root + "/" + outputFolder + "/assets", true);
-			new DirectoryHelper().CopyDirectory(root, root + "/" + outputFolder, false);
+
+            // kopírování root souborů (web.config, favicon, etc.)
+		    string[] excludes = {"run.bat", "spg.ini"};
+			new DirectoryHelper().CopyDirectory(root, root + "/" + outputFolder, false, excludes);
 		}
 
 

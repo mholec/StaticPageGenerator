@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace StaticPageGenerator.Helpers
 {
@@ -12,7 +13,7 @@ namespace StaticPageGenerator.Helpers
 			StopFolders.Add("less");
 		}
 
-		public void CopyDirectory(string sourceDirectory, string destinationDirectory, bool includeSubdirectories)
+		public void CopyDirectory(string sourceDirectory, string destinationDirectory, bool includeSubdirectories, string[] excludes = null)
 		{
 			DirectoryInfo dir = new DirectoryInfo(sourceDirectory);
 
@@ -33,6 +34,11 @@ namespace StaticPageGenerator.Helpers
 			FileInfo[] files = dir.GetFiles();
 			foreach (FileInfo file in files)
 			{
+			    if (excludes != null && excludes.Contains(file.Name.ToLowerInvariant()))
+			    {
+                    continue;
+			    }
+
 				string temppath = Path.Combine(destinationDirectory, file.Name);
 				file.CopyTo(temppath, true);
 			}
